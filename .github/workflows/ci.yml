@@ -22,7 +22,8 @@ jobs:
           enable-cache: true
       - run: uv sync --locked --extra jev
       - run: uv run pytest
+      - run: uv run python examples/demo.py
       - run: uv run ruff check .
       - run: uv run ruff format --check .
-      - run: uv run mypy
+      - run: uv run mypy src examples
       - run: uv build
