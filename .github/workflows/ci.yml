@@ -1,0 +1,28 @@
+name: 検証
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python: ["3.10", "3.14"]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: astral-sh/setup-uv@v6
+        with:
+          python-version: ${{ matrix.python }}
+          enable-cache: true
+      - run: uv sync --locked --extra jev
+      - run: uv run pytest
+      - run: uv run ruff check .
+      - run: uv run ruff format --check .
+      - run: uv run mypy
+      - run: uv build
