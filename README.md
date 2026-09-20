@@ -145,7 +145,7 @@ uv run --extra jev python examples/resolve_action.py
 依存します。実モデルの意味精度や、SLM のツール成功率の改善はまだ測定していません。
 
 初版は同期 API です。JSON 修復、別名辞書、ツール実行、再計画、判断結果のキャッシュは
-提供しません。設計の理由は [docs/design.md](docs/design.md) に残しています。
+提供しません。
 
 ## 開発
 
@@ -159,6 +159,5 @@ uv build
 ```
 
 テストは HTTP の模擬応答を使い、外部 API や秘密情報を必要としません。
-[テストリスト](docs/test-plan.md) と [評価計画](docs/evaluation.md) を分けています。
 
 MIT ライセンス。利用条件は [LICENSE](LICENSE) を参照してください。
