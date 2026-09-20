@@ -75,6 +75,39 @@ uv run --extra jev python examples/resolve_action.py
 
 ## 契約
 
+### 入力から返り値までを見るデモ
+
+`examples/demo.py` は、実際に渡す入力と `resolve()` の呼び出し、採否、確率分布、
+閾値、待ち時間を順に表示します。同じ解決器へ、畑と浜辺の異なる候補を渡します。
+
+```bash
+# キー不要。固定の判断結果で採用・棄却・障害の分岐を確認する
+uv run --extra jev python examples/demo.py
+
+# 一例だけを見る。uncertain は模擬モードで閾値未達になる例
+uv run --extra jev python examples/demo.py --case uncertain
+
+# 閾値を変えると、同じ提案を採用するかどうかが変わる
+uv run --extra jev python examples/demo.py --case uncertain \
+    --min-probability 0.5 --min-confidence 0.1
+
+# 実 Jev。対応する API キーを環境変数に設定して実行する
+uv run --extra jev python examples/demo.py --provider typesafe --case harvest
+uv run --extra jev python examples/demo.py --provider openrouter --case harvest
+```
+
+TypeSafe は `TYPESAFE_API_KEY`、OpenRouter は `OPENROUTER_API_KEY` を使います。
+既存の環境変数名を使う場合は `--api-key-env 変数名` で明示してください。
+`.env` に保存している場合は `uv run --env-file .env --extra jev ...` と指定できます。
+デモはキーの自動探索や、別のプロジェクトからの自動読み込みを行いません。
+
+`--case` の省略時は全例を順に実行します。実 Jev では5回の要求を送り、料金が発生します。
+候補なしは通信せず、意図的な障害の例は模擬モードだけで実行します。
+模擬モードの数値は説明用に用意した値であり、意味の精度や実測性能を示しません。
+実 Jev の結果は固定していません。曖昧な入力は `no_match` になることもあります。
+
+### 採用・棄却・障害の扱い
+
 | 場面 | 振る舞い |
 |---|---|
 | 完全一致した入力 | 判断器を呼ぶ。自動的な省略はしない |
